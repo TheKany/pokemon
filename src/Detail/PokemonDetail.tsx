@@ -1,67 +1,75 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import PokeMarkChip from "../Common/PokeMarkChip";
+import { useParams } from "react-router-dom";
+import {
+  fetchPokemonsDetail,
+  PokemonDetailInterface,
+} from "../Service/pokemonService";
 
 // interface Props {}
 
-const TempImg =
-  "https://mblogthumb-phinf.pstatic.net/20151020_232/mallteriyang_1445318621191pI5Fg_PNG/001_001.png?type=w2";
+const PokemonDetail = () => {
+  let { name } = useParams();
+  const [pokemon, setPokemon] = useState<PokemonDetailInterface | null>(null);
 
-const PokemonDetail = (): React.ReactElement => {
+  useEffect(() => {
+    if (!name) return;
+
+    (async () => {
+      const result = await fetchPokemonsDetail(name);
+      setPokemon(result);
+    })();
+  }, [name]);
+
+  if (!name || !pokemon) return null;
+
+  const basicInfo = [
+    { title: "번호", head: pokemon.id },
+    { title: "이름", head: pokemon.korName },
+    { title: "타입", head: pokemon.types.toString() },
+    { title: "키", head: `${pokemon.height} m` },
+    { title: "몸무게", head: `${pokemon.weight} kg` },
+  ];
+
   return (
     <ContainerSty>
       <ImageContainerSty>
-        <ImageSty src={TempImg} />
+        <ImageSty src={pokemon.images.dreamWorld} />
       </ImageContainerSty>
       <BodySty>
         <h2>기본 정보</h2>
         <TableSty>
           <TableHeadSty>번호</TableHeadSty>
-          <TableBodySty>1</TableBodySty>
+          <TableBodySty>{pokemon.id}</TableBodySty>
         </TableSty>
         <TableSty>
           <TableHeadSty>이름</TableHeadSty>
-          <TableBodySty>이상해씨</TableBodySty>
+          <TableBodySty>{pokemon.korName}</TableBodySty>
         </TableSty>
         <TableSty>
           <TableHeadSty>타입</TableHeadSty>
-          <TableBodySty>grass, poison</TableBodySty>
+          <TableBodySty>{pokemon.types.toString()}</TableBodySty>
         </TableSty>
         <TableSty>
           <TableHeadSty>키</TableHeadSty>
-          <TableBodySty>0.7 M</TableBodySty>
+          <TableBodySty>{`${pokemon.height} m`}</TableBodySty>
         </TableSty>
         <TableSty>
           <TableHeadSty>몸무게</TableHeadSty>
-          <TableBodySty>6.9kg</TableBodySty>
+          <TableBodySty>{`${pokemon.weight} kg`}</TableBodySty>
         </TableSty>
       </BodySty>
       <BodySty>
         <h2>능력치</h2>
-        <TableSty>
-          <TableHeadSty>hp</TableHeadSty>
-          <TableBodySty>45</TableBodySty>
-        </TableSty>
-        <TableSty>
-          <TableHeadSty>attack</TableHeadSty>
-          <TableBodySty>49</TableBodySty>
-        </TableSty>
-        <TableSty>
-          <TableHeadSty>defense</TableHeadSty>
-          <TableBodySty>49</TableBodySty>
-        </TableSty>
-        <TableSty>
-          <TableHeadSty>special-attack</TableHeadSty>
-          <TableBodySty>65</TableBodySty>
-        </TableSty>
-        <TableSty>
-          <TableHeadSty>special-defense</TableHeadSty>
-          <TableBodySty>65</TableBodySty>
-        </TableSty>
-        <TableSty>
-          <TableHeadSty>speed</TableHeadSty>
-          <TableBodySty>45</TableBodySty>
-        </TableSty>
+        {pokemon.baseStats.map((stat, idx) => {
+          return (
+            <TableSty key={idx}>
+              <TableHeadSty>{stat.name}</TableHeadSty>
+              <TableBodySty>{stat.stat}</TableBodySty>
+            </TableSty>
+          );
+        })}
       </BodySty>
       <FooterSty>
         <PokeMarkChip />

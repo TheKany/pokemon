@@ -35,7 +35,7 @@ interface PokemonDetailInfoInterface {
     };
   };
   stats: {
-    base_stats: number;
+    base_stat: number;
     stat: {
       name: string;
     };
@@ -114,7 +114,7 @@ export const fetchPokemonsDetail = async (
       officialArtwork: detail.sprites.other["official-artwork"].front_default,
     },
     baseStats: detail.stats.map((item) => {
-      return { name: item.stat.name, stat: item.base_stats };
+      return { name: item.stat.name, stat: item.base_stat };
     }),
   };
 };
