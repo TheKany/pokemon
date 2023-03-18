@@ -6,7 +6,7 @@ Typescript
 
 React
 
-## 사용 라이브러리
+### 사용 라이브러리
 
 1. motion
 
@@ -25,3 +25,15 @@ npm install react-router-dom
 ```
 npm install react-infinite-scroll-hook
 ```
+
+4. react-intersection-observer-hook
+
+```
+npm install react-intersection-observer-hook
+```
+
+### 사용 API
+
+1. 포켓몬 API
+
+2. Intersection Observer API

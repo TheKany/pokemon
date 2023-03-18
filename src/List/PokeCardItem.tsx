@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import styled from "@emotion/styled";
+import { useIntersectionObserver } from "react-intersection-observer-hook";
+
 import PokeNameChip from "../Common/PokeNameChip";
 import PokeMarkChip from "../Common/PokeMarkChip";
 import {
   fetchPokemonsDetail,
   PokemonDetailInterface,
 } from "../Service/pokemonService";
-import Loading from "../Common/Loading";
 
 interface PokeCardProps {
   name: string;
@@ -16,6 +17,8 @@ interface PokeCardProps {
 
 const PokeCardItem = (props: PokeCardProps) => {
   const navigate = useNavigate();
+  const [ref, { entry }] = useIntersectionObserver();
+  const isVisible = entry && entry.isIntersecting;
   const [pokemon, setPokemon] = useState<PokemonDetailInterface | null>(null);
 
   const handleClick = () => {
@@ -23,18 +26,22 @@ const PokeCardItem = (props: PokeCardProps) => {
   };
 
   useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+
     (async () => {
       const detail = await fetchPokemonsDetail(props.name);
       setPokemon(detail);
     })();
-  }, [props.name]);
+  }, [props.name, isVisible]);
 
   if (!pokemon) {
     return null;
   }
 
   return (
-    <ItemSty onClick={handleClick} color={pokemon.color}>
+    <ItemSty onClick={handleClick} color={pokemon.color} ref={ref}>
       <HeaderSty>
         <PokeNameChip
           name={pokemon.korName}
