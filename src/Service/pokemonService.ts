@@ -77,8 +77,10 @@ export interface PokemonDetailInterface {
 
 const call = axios.create();
 
-export const fetchPokemons = async () => {
-  const res = await call.get<PokemonListInterface>(POKEMON_API);
+export const fetchPokemons = async (nextUrl?: string) => {
+  const defaultUrl = nextUrl ? nextUrl : POKEMON_API;
+
+  const res = await call.get<PokemonListInterface>(defaultUrl);
 
   return res.data;
 };
