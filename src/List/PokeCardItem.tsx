@@ -8,6 +8,7 @@ import {
   fetchPokemonsDetail,
   PokemonDetailInterface,
 } from "../Service/pokemonService";
+import Loading from "../Common/Loading";
 
 interface PokeCardProps {
   name: string;

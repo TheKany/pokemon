@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import styled from "@emotion/styled";
 import PokeMarkChip from "../Common/PokeMarkChip";
-import { useParams } from "react-router-dom";
 import {
   fetchPokemonsDetail,
   PokemonDetailInterface,
@@ -22,15 +23,17 @@ const PokemonDetail = () => {
     })();
   }, [name]);
 
-  if (!name || !pokemon) return null;
+  if (!name || !pokemon) {
+    return null;
+  }
 
-  const basicInfo = [
-    { title: "번호", head: pokemon.id },
-    { title: "이름", head: pokemon.korName },
-    { title: "타입", head: pokemon.types.toString() },
-    { title: "키", head: `${pokemon.height} m` },
-    { title: "몸무게", head: `${pokemon.weight} kg` },
-  ];
+  // const basicInfo = [
+  //   { title: "번호", head: pokemon.id },
+  //   { title: "이름", head: pokemon.korName },
+  //   { title: "타입", head: pokemon.types.toString() },
+  //   { title: "키", head: `${pokemon.height} m` },
+  //   { title: "몸무게", head: `${pokemon.weight} kg` },
+  // ];
 
   return (
     <ContainerSty>
@@ -86,11 +89,13 @@ const ContainerSty = styled.section`
 
 const ImageContainerSty = styled.div`
   display: block;
+  margin: 0 auto;
   overflow: hidden;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
   padding: 10px;
+  width: 600px;
 `;
 
 const ImageSty = styled.img`
