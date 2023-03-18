@@ -1,13 +1,31 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-// interface Props {}
+interface PokeNameChipProps {
+  id: number;
+  name: string;
+  color: string;
+}
 
-const PokeNameChip = (): React.ReactElement => {
+const PokeNameChip = (props: PokeNameChipProps): React.ReactElement => {
+  const renderNumber = (id: number) => {
+    const toStringId = id.toString();
+
+    if (toStringId.length > 2) {
+      return toStringId;
+    }
+
+    if (toStringId.length > 1) {
+      return `0${toStringId}`;
+    }
+
+    return `00${toStringId}`;
+  };
+
   return (
     <ChipSty>
-      <IndexSty>001 </IndexSty>
-      <NameSty>이상해씨</NameSty>
+      <IndexSty color={props.color}>{renderNumber(props.id)}</IndexSty>
+      <NameSty>{props.name}</NameSty>
     </ChipSty>
   );
 };
@@ -21,9 +39,9 @@ const ChipSty = styled.div`
   font-weight: 500;
 `;
 
-const IndexSty = styled.div`
+const IndexSty = styled.div<{ color: string }>`
   padding: 3px 8px;
-  background-color: green;
+  background-color: ${(props) => props.color};
   border-radius: 16px;
   font-size: 14px;
 `;
