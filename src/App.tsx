@@ -1,5 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import styled from "@emotion/styled";
+import { Provider } from "react-redux/es/exports";
+import { store } from "./Store";
 
 import Header from "./Common/Header";
 import PageNavigator from "./PageNavigator";
@@ -7,10 +9,12 @@ import PageNavigator from "./PageNavigator";
 function App() {
   return (
     <Container>
-      <BrowserRouter>
-        <Header />
-        <PageNavigator />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Header />
+          <PageNavigator />
+        </BrowserRouter>
+      </Provider>
     </Container>
   );
 }

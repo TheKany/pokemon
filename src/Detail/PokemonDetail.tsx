@@ -1,44 +1,36 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import styled from "@emotion/styled";
 import PokeMarkChip from "../Common/PokeMarkChip";
-import {
-  fetchPokemonsDetail,
-  PokemonDetailInterface,
-} from "../Service/pokemonService";
-
-// interface Props {}
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../Store";
+import { fetchPokemonsDetail } from "../Store/pokemonDetailSlice";
 
 const PokemonDetail = () => {
   let { name } = useParams();
-  const [pokemon, setPokemon] = useState<PokemonDetailInterface | null>(null);
+  const dispatch = useAppDispatch();
+
+  const imagetype = useSelector((state: RootState) => state.imageType.type);
+  const { pokemonsDetails } = useSelector(
+    (state: RootState) => state.pokemonsDetail
+  );
+  const pokemon = name ? pokemonsDetails[name] : null;
 
   useEffect(() => {
     if (!name) return;
 
-    (async () => {
-      const result = await fetchPokemonsDetail(name);
-      setPokemon(result);
-    })();
+    dispatch(fetchPokemonsDetail(name));
   }, [name]);
 
   if (!name || !pokemon) {
     return null;
   }
 
-  // const basicInfo = [
-  //   { title: "번호", head: pokemon.id },
-  //   { title: "이름", head: pokemon.korName },
-  //   { title: "타입", head: pokemon.types.toString() },
-  //   { title: "키", head: `${pokemon.height} m` },
-  //   { title: "몸무게", head: `${pokemon.weight} kg` },
-  // ];
-
   return (
     <ContainerSty>
       <ImageContainerSty>
-        <ImageSty src={pokemon.images.dreamWorld} />
+        <ImageSty src={pokemon.images[imagetype]} />
       </ImageContainerSty>
       <BodySty>
         <h2>기본 정보</h2>

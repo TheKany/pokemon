@@ -1,39 +1,27 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
-import { fetchPokemons, PokemonListInterface } from "../Service/pokemonService";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../Store";
+import { fetchPokemons } from "../Store/pokemonSlice";
 import PokeCardItem from "./PokeCardItem";
 
 const PokeCardList = (): React.ReactElement => {
-  const [pokemons, setPokemons] = useState<PokemonListInterface>({
-    count: 0,
-    next: "",
-    results: [],
-  });
+  const dispatch = useAppDispatch();
+  const { pokemons } = useSelector((state: RootState) => state.pokemons);
 
   const [scrollRef] = useInfiniteScroll({
     loading: false,
     hasNextPage: pokemons.next !== "",
     onLoadMore: async () => {
-      const newPokemons = await fetchPokemons(pokemons.next);
-
-      setPokemons({
-        ...newPokemons,
-        results: [...pokemons.results, ...newPokemons.results],
-      });
+      dispatch(fetchPokemons(pokemons.next));
     },
     disabled: false,
-    // `rootMargin` is passed to `IntersectionObserver`.
-    // We can use it to trigger 'onLoadMore' when the sentry comes near to become
-    // visible, instead of becoming fully visible on the screen.
     rootMargin: "0px 0px 600px 0px",
   });
 
   useEffect(() => {
-    (async () => {
-      const result = await fetchPokemons();
-      setPokemons(result);
-    })();
+    dispatch(fetchPokemons());
   }, []);
 
   return (
