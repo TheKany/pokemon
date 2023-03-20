@@ -37,7 +37,17 @@ const PokeCardItem = (props: PokeCardProps) => {
   }, [props.name, isVisible]);
 
   if (!pokemon) {
-    return null;
+    return (
+      <ItemSty onClick={handleClick} color={"#fff"} ref={ref}>
+        <HeaderSty>
+          <PokeNameChip name={"포켓몬"} id={0} color={"#ffca09"} />
+        </HeaderSty>
+        <LoadingBodySty>?</LoadingBodySty>
+        <FooterSty>
+          <PokeMarkChip />
+        </FooterSty>
+      </ItemSty>
+    );
   }
 
   return (
@@ -89,6 +99,14 @@ const BodySty = styled.div`
   padding: 10px;
   width: 150px;
   height: 200px;
+`;
+
+const LoadingBodySty = styled.div`
+  display: flex;
+  justify-content: center;
+  color: #ffca09;
+  font-size: 40px;
+  font-weight: 900;
 `;
 
 const ImageSty = styled.img`
