@@ -6,7 +6,15 @@ Typescript
 
 React
 
-### 사용 라이브러리
+## 시작하기
+
+git clone 후
+
+```
+npm install
+```
+
+### 사용 라이브러리/패키지
 
 1. motion
 
@@ -30,6 +38,12 @@ npm install react-infinite-scroll-hook
 
 ```
 npm install react-intersection-observer-hook
+```
+
+5. Redux Toolkit
+
+```
+npm install @reduxjs/toolkit react-redux
 ```
 
 ### 사용 API
